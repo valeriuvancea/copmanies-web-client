@@ -1,0 +1,29 @@
+<!doctype html>
+<html ng-app="app" ng-controller="client">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <table style="text-align: center">
+        <tr>
+            <th>Company ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        <tr ng-repeat="company in companies">
+            <td>{{company.CompanyID}}</td>
+            <td>{{company.Name}}</td>
+            <td>{{company.Address}}</td>
+            <td>{{company.City}}</td>
+            <td>{{company.Country}}</td>
+            <td>{{company.EMail}}</td>
+            <td>{{company.PhoneNumber}}</td>
+        </tr>
+    </table>
+  </body>
+</html>
