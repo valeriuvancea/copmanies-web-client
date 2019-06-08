@@ -32,6 +32,7 @@ angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.expandable', 'ui.grid.edit
     var data = response.data;
     for (var i = 0; i < data.length; i++) {
       data[i].subGridOptions = {
+        headerTemplate: '<button>test</button>',
         columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
         data: data[i].BeneficialOwners
       }
