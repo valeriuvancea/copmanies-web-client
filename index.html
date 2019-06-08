@@ -11,37 +11,18 @@
     <script src="http://ui-grid.info/docs/grunt-scripts/lodash.min.js"></script>
     <script src="http://ui-grid.info/docs/grunt-scripts/jszip.min.js"></script>
     <script src="http://ui-grid.info/docs/grunt-scripts/excel-builder.dist.js"></script>
+    <script src="ui-grid.expandable.min.js"></script>
     <script src="ui-grid.min.js"></script>
     <link rel="stylesheet" href="ui-grid.min.css" type="text/css">
     <script src="app.js"></script>
     <style>
       .myGrid {
-    width: 500px;
+    width: 100%;
     height: 250px;
   }
     </style>
   </head>
   <body>
-    <div ui-grid="myData" ui-grid-edit class="myGrid"></div>
-    <table style="text-align: center">
-        <tr>
-            <th>Company ID</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>Country</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-        </tr>
-        <tr ng-repeat="company in companies">
-            <td>{{company.CompanyID}}</td>
-            <td>{{company.Name}}</td>
-            <td>{{company.Address}}</td>
-            <td>{{company.City}}</td>
-            <td>{{company.Country}}</td>
-            <td>{{company.EMail}}</td>
-            <td>{{company.PhoneNumber}}</td>
-        </tr>
-    </table>
+    <div ui-grid="grid" ui-grid-edit ui-grid-expandable class="myGrid"></div>
   </body>
 </html>
