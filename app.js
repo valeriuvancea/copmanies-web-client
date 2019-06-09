@@ -25,38 +25,66 @@ angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.expandable', 'ui.grid.edit
       console.log('edited row id:' + rowEntity.CompanyID + ' Column:' + colDef.name + ' newValue:' + newValue + ' oldValue:' + oldValue);
     });
   };
-  $http({
-    method: 'GET',
-    url: 'http://companies-web-service.herokuapp.com/companies'
-  }).then(function successCallback(response) {
-    var data = response.data;
-    for (var i = 0; i < data.length; i++) {
-      data[i].subGridOptions = {
-        headerTemplate: '<div class="ui-grid-top-panel" ng-controller="client" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="addBeneficialOwner('
-        + data[i].CompanyID + ')">Add a beneficial owner</button></div>',
-        columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
-        data: data[i].BeneficialOwners
+  var getCompanies;
+  (getCompanies = function (){
+    $http({
+      method: 'GET',
+      url: 'http://companies-web-service.herokuapp.com/companies'
+    }).then(function successCallback(response) {
+      var data = response.data;
+      for (var i = 0; i < data.length; i++) {
+        data[i].subGridOptions = {
+          headerTemplate: '<div class="ui-grid-top-panel" ng-controller="client" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="addBeneficialOwner('
+          + data[i].CompanyID + ')">Add a beneficial owner</button></div>',
+          columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
+          data: data[i].BeneficialOwners
+        }
       }
-      console.log(data[i].BeneficialOwners);
-    }
-    $scope.grid.data=response.data;
-  }, function errorCallback(response) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-  });
+      $scope.grid.data=response.data;
+    }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+    });
+  })();
   $scope.addCompany = function() {
     var n = $scope.grid.data.length + 1;
-    $scope.grid.data.push({
-      "CompanyID": "-",
+    var newCompany = {
       "Name": "Company " + n,
+      "Address": "Address " + n,
       "City": "City " + n,
       "Country": "Country " + n,
-      "EMail": "Email " + n,
-      "PhoneNumber": "Phone Number" + n
+    };
+    $http({
+      method: 'POST',
+      url: 'http://companies-web-service.herokuapp.com/companies',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: newCompany
+    }).then(function successCallback(response) {
+      getCompanies();
+    }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
     });
   };
   $scope.addBeneficialOwner = function(companyID) {
-    alert(companyID)
+    var newBeneficialOwner = [{
+      "FullName": "New beneficial owner"
+    }];
+    $http({
+      method: 'POST',
+      url: 'http://companies-web-service.herokuapp.com/companies/' + companyID + '/beneficialOwners',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: newBeneficialOwner
+    }).then(function successCallback(response) {
+      getCompanies();
+    }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+    });
   }
 });
     
