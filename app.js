@@ -32,7 +32,8 @@ angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.expandable', 'ui.grid.edit
     var data = response.data;
     for (var i = 0; i < data.length; i++) {
       data[i].subGridOptions = {
-        headerTemplate: '<button>test</button>',
+        headerTemplate: '<div class="ui-grid-top-panel" ng-controller="client" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="addBeneficialOwner('
+        + data[i].CompanyID + ')">Add a beneficial owner</button></div>',
         columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
         data: data[i].BeneficialOwners
       }
@@ -43,7 +44,7 @@ angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.expandable', 'ui.grid.edit
         // called asynchronously if an error occurs
         // or server returns response with an error status.
   });
-  $scope.addData = function() {
+  $scope.addCompany = function() {
     var n = $scope.grid.data.length + 1;
     $scope.grid.data.push({
       "CompanyID": "-",
@@ -54,5 +55,8 @@ angular.module('app', ['ngTouch', 'ui.grid', 'ui.grid.expandable', 'ui.grid.edit
       "PhoneNumber": "Phone Number" + n
     });
   };
+  $scope.addBeneficialOwner = function(companyID) {
+    alert(companyID)
+  }
 });
     
