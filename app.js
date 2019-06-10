@@ -8,10 +8,11 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
         console.log('edited row id:' + rowEntity.CompanyID + ' Column:' + colDef.name + ' newValue:' + newValue + ' oldValue:' + oldValue);
       });
     },
+    appScopeProvider: this,
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
     showExpandAllButton: false,
     expandableRowScope: {
-      subGridVariable: 'subGridScopeVariable'
+      addBeneficialOwner: addBeneficialOwner
     }
   };
   setTimeout(() => $scope.grid.api = $scope.gridApi,0)
@@ -26,11 +27,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
     { name: 'PhoneNumber', displayName: 'Phone Number', width: '17%', enableColumnMenu: false }
   ];
 
-  $scope.showMe = function(){
-    alert($scope.someProp);
- };
- $scope.grid.appScopeProvider = $scope;
-
   var getCompanies;
   (getCompanies = function (){
     $http({
@@ -40,7 +36,10 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
       var data = response.data;
       for (var i = 0; i < data.length; i++) {
         data[i].subGridOptions = {
-          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="grid.appScope.showMe()">Add a beneficial owner</button></div>',
+          onRegisterApi: function(gridApi) {
+            $scope.gridApi = gridApi;
+          },
+          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="grid.appScope.addBeneficialOwner('+data[i].CompanyID+')">Add a beneficial owner</button></div>',
           columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
           data: data[i].BeneficialOwners
         }
@@ -73,8 +72,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
           // or server returns response with an error status.
     });
   };
-  $scope.addBeneficialOwner = function(companyID) {
-    setTimeout(() => console.log($scope),0);
+  function addBeneficialOwner(companyID) {
     var newBeneficialOwner = [{
       "FullName": "New beneficial owner"
     }];
