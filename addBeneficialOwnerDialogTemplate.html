@@ -3,7 +3,7 @@
     <h4 style="display:inline">Full name: </h4>
     <input type="text" placeholder="Full name" ng-model="name" />
     <div class="ngdialog-buttons">
-        <button type="button" class="btn" ng-click=confirm({{name}})>OK</button>
+        <button type="button" class="btn" ng-click="confirm(name)">OK</button>
         <button type="button" class="btn" ng-click=closeThisDialog("Cancel")>Cancel</button>
     </div>
 </div>
