@@ -3,12 +3,15 @@
     height: 90vh;
     text-align: center
 }
-.btn, .smallBtn {
+.btn, 
+.smallBtn,
+.btnOK,
+.btnClose {
     color: #ffffff;
     background-color: #18bc9c;
     border-color: #18bc9c;
     display: inline-block;
-    margin-bottom: 5px;
+    margin: 5px;
     font-weight: normal;
     cursor: pointer;
     text-align: center;
@@ -21,6 +24,14 @@
     line-height: 1.4;
     border-radius: 4px;
 }
+
+.btnOK,
+.btnClose
+{
+
+}
+
+
 
 .smallBtn {
     font-size: 13px;

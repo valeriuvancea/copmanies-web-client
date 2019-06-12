@@ -1,6 +1,5 @@
-angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
-.controller('client', function($scope, $http, uiGridConstants) {
-  var vm = this;
+angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialog'])
+.controller('client', function($scope, $http, uiGridConstants, ngDialog) {
   $scope.grid = {
     onRegisterApi: function(gridApi) {
       $scope.gridApi = gridApi;
@@ -12,10 +11,11 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
     showExpandAllButton: false,
     expandableRowScope: {
+      openAddBeneficialOwnerModal: openAddBeneficialOwnerModal,
       addBeneficialOwner: addBeneficialOwner
     }
   };
-  setTimeout(() => $scope.grid.api = $scope.gridApi,0)
+
   $scope.grid.columnDefs = 
   [
     { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, width: '10%', enableColumnMenu: false },
@@ -39,17 +39,16 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
           onRegisterApi: function(gridApi) {
             $scope.gridApi = gridApi;
           },
-          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="grid.appScope.addBeneficialOwner('+data[i].CompanyID+')">Add a beneficial owner</button></div>',
+          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="smallBtn" ng-click="grid.appScope.openAddBeneficialOwnerModal('+data[i].CompanyID+')">Add a beneficial owner</button></div>',
           columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
           data: data[i].BeneficialOwners
         }
       }
       $scope.grid.data=response.data;
     }, function errorCallback(response) {
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
     });
   })();
+  
   $scope.addCompany = function() {
     var n = $scope.grid.data.length + 1;
     var newCompany = {
@@ -68,11 +67,26 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
     }).then(function successCallback(response) {
       getCompanies();
     }, function errorCallback(response) {
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
     });
   };
+
+  function openAddBeneficialOwnerModal(companyID) {
+    ngDialog.openConfirm({template: 'addBeneficialOwnerDialogTemplate.html',
+      className: 'ngdialog-theme-default',
+		  scope: $scope //Pass the scope object if you need to access in the template
+		}).then(
+			function(success) {
+				addBeneficialOwner(companyID);
+			},
+			function(error) {
+				//Cancel or do nothing
+			}
+		);
+  }
+
   function addBeneficialOwner(companyID) {
+    alert(companyID);
+    /*
     var newBeneficialOwner = [{
       "FullName": "New beneficial owner"
     }];
@@ -89,7 +103,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit'])
     }, function errorCallback(response) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
-    });
+    });*/
   }
 });
+
     
