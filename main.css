@@ -59,3 +59,16 @@
     border: 1px solid #f0f0f0;
     padding: 2px;
 }
+
+.okButton[disabled]
+{
+    background-color: gray;
+    border-color: gray;
+    cursor: not-allowed;
+}
+
+.okButton[disabled]:hover
+{
+    background-color: gray;
+    border-color: gray;
+}
