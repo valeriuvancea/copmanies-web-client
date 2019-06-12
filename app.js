@@ -31,7 +31,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
   (getCompanies = function (){
     $http({
       method: 'GET',
-      url: 'http://companies-web-service.herokuapp.com/companies'
+      url: 'https://companies-web-service.herokuapp.com/companies'
     }).then(function successCallback(response) {
       var data = response.data;
       for (var i = 0; i < data.length; i++) {
@@ -59,7 +59,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     };
     $http({
       method: 'POST',
-      url: 'http://companies-web-service.herokuapp.com/companies',
+      url: 'https://companies-web-service.herokuapp.com/companies',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -92,7 +92,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     }];
     $http({
       method: 'POST',
-      url: 'http://companies-web-service.herokuapp.com/companies/' + companyID + '/beneficialOwners',
+      url: 'https://companies-web-service.herokuapp.com/companies/' + companyID + '/beneficialOwners',
       headers: {
         'Content-Type': 'application/json'
       },
