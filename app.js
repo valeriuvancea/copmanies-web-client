@@ -76,7 +76,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
 		  scope: $scope //Pass the scope object if you need to access in the template
 		}).then(
 			function(success) {
-        console.log($scope);
+        console.log(success);
 				addBeneficialOwner(companyID);
 			},
 			function(error) {
