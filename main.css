@@ -3,10 +3,8 @@
     height: 90vh;
     text-align: center
 }
-.btn, 
-.smallBtn,
-.btnOK,
-.btnClose {
+
+.btn {
     color: #ffffff;
     background-color: #18bc9c;
     border-color: #18bc9c;
@@ -25,13 +23,21 @@
     border-radius: 4px;
 }
 
-.btnOK,
-.btnClose
+.btn:hover
 {
-
+    background: rgba(0,0,0,0.4);  
 }
 
+.cancelBtn
+{
+    background-color: #bc1841;
+    border-color: #bc1841;
+}
 
+.inputFields
+{
+    margin-bottom: 0.83em;
+}
 
 .smallBtn {
     font-size: 13px;
