@@ -11,8 +11,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
     showExpandAllButton: false,
     expandableRowScope: {
-      openAddBeneficialOwnerModal: openAddBeneficialOwnerModal,
-      addBeneficialOwner: addBeneficialOwner
+      openAddBeneficialOwnerModal: openAddBeneficialOwnerModal
     }
   };
 
@@ -75,9 +74,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
       className: 'ngdialog-theme-default',
 		  scope: $scope //Pass the scope object if you need to access in the template
 		}).then(
-			function(success) {
-        console.log(success);
-				addBeneficialOwner(companyID);
+			function(fullName) {
+				addBeneficialOwnerAtCompanyWithIt(fullName, companyID);
 			},
 			function(error) {
 				//Cancel or do nothing
@@ -85,11 +83,9 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
 		);
   }
 
-  function addBeneficialOwner(companyID) {
-    alert(companyID);
-    /*
+  function addBeneficialOwnerAtCompanyWithIt(fullName, companyID) {
     var newBeneficialOwner = [{
-      "FullName": "New beneficial owner"
+      "FullName": fullName
     }];
     $http({
       method: 'POST',
@@ -100,11 +96,11 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
       data: newBeneficialOwner
     }).then(function successCallback(response) {
       getCompanies();
-      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.ALL );
+      $scope.gridApi.core.refresh();
     }, function errorCallback(response) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
-    });*/
+    });
   }
 });
 
