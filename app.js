@@ -70,9 +70,11 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
   };
 
   function openAddBeneficialOwnerModal(companyID) {
+    console.log($scope);
+    console.log(this)
     ngDialog.openConfirm({template: 'addBeneficialOwnerDialogTemplate.html',
       className: 'ngdialog-theme-default',
-		  scope: $scope //Pass the scope object if you need to access in the template
+		  scope: $scope
 		}).then(
 			function(fullName) {
 				addBeneficialOwnerAtCompanyWithIt(fullName, companyID);
