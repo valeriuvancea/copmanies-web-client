@@ -2,10 +2,10 @@
     <h2>Add a beneficial owner</h2>
     <div class="inputFields">
         <h6 style="display:inline">Full name: </h6>
-        <input type="text" placeholder="Full name" name="fullName" ng-model="fullName" class="dialogInput" required ng-pattern="/^[a-zA-Z\s]*$/"/>
+        <input type="text" placeholder="Full name" name="fullName" ng-model="fullName" class="dialogInput" required ng-pattern="/^[A-Z\s]*$/i"/>
     </div>
     <p ng-show="form.fullName.$invalid" style="color:#bc1841">
-        Full name should contain at least one letter and should be formed only with letters and spaces.
+        Full name must contain at least one letter and must be formed only with letters and spaces.
     </p>
     <div class="ngdialog-buttons">
         <button type="button" ng-disabled="form.fullName.$invalid" class="btn okButton" ng-click="confirm(fullName)">OK</button>

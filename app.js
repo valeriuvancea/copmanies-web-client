@@ -9,7 +9,9 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     },
     appScopeProvider: this,
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
-    showExpandAllButton: false,
+    showExpandAllButton: false, 
+    enableSorting: true,
+    enableColumnMenu: false,
     expandableRowScope: {
       openAddBeneficialOwnerModal: openAddBeneficialOwnerModal
     }
@@ -17,13 +19,13 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
 
   $scope.grid.columnDefs = 
   [
-    { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, width: '10%', enableColumnMenu: false },
-    { name: 'Name', width: '15%', enableColumnMenu: false },
-    { name: 'Address', width: '15%', enableColumnMenu: false },
-    { name: 'City', width: '10%', enableColumnMenu: false },
-    { name: 'Country', width: '10%', enableColumnMenu: false },
-    { name: 'EMail', displayName: 'Email', width: '20%', enableColumnMenu: false },
-    { name: 'PhoneNumber', displayName: 'Phone Number', width: '17%', enableColumnMenu: false }
+    { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, width: '10%'},
+    { name: 'Name', width: '15%'},
+    { name: 'Address', width: '15%'},
+    { name: 'City', width: '10%'},
+    { name: 'Country', width: '10%'},
+    { name: 'EMail', displayName: 'Email', width: '20%'},
+    { name: 'PhoneNumber', displayName: 'Phone Number', width: '17%'}
   ];
 
   var getCompanies;
@@ -51,30 +53,31 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     });
   })();
   
-  $scope.addCompany = function() {
-    var n = $scope.grid.data.length + 1;
-    var newCompany = {
-      "Name": "Company " + n,
-      "Address": "Address " + n,
-      "City": "City " + n,
-      "Country": "Country " + n,
-    };
-    $http({
-      method: 'POST',
-      url: 'https://companies-web-service.herokuapp.com/companies',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: newCompany
-    }).then(function successCallback(response) {
-      getCompanies();
-    }, function errorCallback(response) {
-    });
+  $scope.addCompany = function() { 
+    ngDialog.openConfirm({template: 'addCompanyDialogTemplate.html',
+      className: 'ngdialog-theme-default',
+		  scope: $scope
+		}).then(
+			function(newCompany) {
+				$http({
+          method: 'POST',
+          url: 'https://companies-web-service.herokuapp.com/companies',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: newCompany
+        }).then(function successCallback(response) {
+          getCompanies();
+          $scope.gridApi.core.refresh();
+        }, function errorCallback(response) {
+        });
+			},
+			function(error) {
+			}
+    );
   };
 
   function openAddBeneficialOwnerModal(companyID) {
-    console.log($scope);
-    console.log(this)
     ngDialog.openConfirm({template: 'addBeneficialOwnerDialogTemplate.html',
       className: 'ngdialog-theme-default',
 		  scope: $scope
@@ -83,7 +86,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
 				addBeneficialOwnerAtCompanyWithIt(fullName, companyID);
 			},
 			function(error) {
-				//Cancel or do nothing
 			}
 		);
   }
@@ -103,8 +105,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
       getCompanies();
       $scope.gridApi.core.refresh();
     }, function errorCallback(response) {
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
     });
   }
 });

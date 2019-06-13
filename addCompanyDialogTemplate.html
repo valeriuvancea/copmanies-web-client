@@ -1,0 +1,21 @@
+<form name="form" style="text-align:center">
+    <h2>Add a company</h2>
+    <div class="inputFields">        
+        <label>Name*: </label>
+        <input type="text" placeholder="Name" ng-model="newCompany.Name" class="dialogInput" required/><br/>    
+        <label>Address*: </label>
+        <input type="text" placeholder="Address" ng-model="newCompany.Address" class="dialogInput" required/><br/>    
+        <label>City*: </label>  
+        <input type="text" placeholder="City" ng-model="newCompany.City" class="dialogInput" required ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>  
+        <label>Country*: </label>  
+        <input type="text" placeholder="Country" ng-model="newCompany.Country" class="dialogInput" required ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>  
+        <label>Email: </label>
+        <input type="text" placeholder="Email" ng-model="newCompany.EMail" class="dialogInput" ng-pattern="/^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i"/><br/>  
+        <label>Phone number: </label>
+        <input type="text" placeholder="Phone number" ng-model="newCompany.PhoneNumber" class="dialogInput" ng-pattern="/^\+?[0-9]+$/"/><br/>
+    </div>
+    <div class="ngdialog-buttons">
+        <button type="button" ng-disabled="form.$invalid" class="btn okButton" ng-click="confirm(newCompany)">OK</button>
+        <button type="button" class="btn cancelBtn" ng-click=closeThisDialog("Cancel")>Cancel</button>
+    </div>
+</form>

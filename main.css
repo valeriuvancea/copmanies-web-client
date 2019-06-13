@@ -71,3 +71,15 @@
     background-color: gray;
     border-color: gray;
 }
+
+.ng-invalid
+{
+    border: 2px solid #bc1841;
+}
+
+label 
+{
+    display: inline-block;
+    width: 140px;
+    text-align: right;
+}
