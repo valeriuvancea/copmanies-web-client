@@ -1,17 +1,20 @@
-angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialog'])
+angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.cellNav', 'ui.grid.moveColumns','ngDialog'])
 .controller('client', function($scope, $http, ngDialog) {
   $scope.grid = {
     onRegisterApi: function(gridApi) {
       $scope.gridApi = gridApi;
       gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
         console.log('edited row id:' + rowEntity.CompanyID + ' Column:' + colDef.name + ' newValue:' + newValue + ' oldValue:' + oldValue);
+        $scope.$apply();
       });
     },
     appScopeProvider: this,
+    enableColumnResizing: true,
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
     showExpandAllButton: false, 
     enableSorting: true,
     enableColumnMenus: false,
+    enableCellEditOnFocus: true,
     expandableRowScope: {
       openAddBeneficialOwnerModal: openAddBeneficialOwnerModal
     }
@@ -20,11 +23,11 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
   $scope.grid.columnDefs = 
   [
     { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, type: "number", width: '10%'},
-    { name: 'Name', width: '15%'},
-    { name: 'Address', width: '15%'},
+    { name: 'Name', width: '10%'},
+    { name: 'Address', width: '25%'},
     { name: 'City', width: '10%'},
     { name: 'Country', width: '10%'},
-    { name: 'EMail', displayName: 'Email', width: '20%'},
+    { name: 'EMail', displayName: 'Email', width: '15%'},
     { name: 'PhoneNumber', displayName: 'Phone Number', width: '17%'}
   ];
 
