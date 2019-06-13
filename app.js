@@ -11,7 +11,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
     showExpandAllButton: false, 
     enableSorting: true,
-    enableColumnMenu: false,
+    enableColumnMenus: false,
     expandableRowScope: {
       openAddBeneficialOwnerModal: openAddBeneficialOwnerModal
     }
@@ -19,7 +19,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
 
   $scope.grid.columnDefs = 
   [
-    { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, width: '10%'},
+    { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, type: "number", width: '10%'},
     { name: 'Name', width: '15%'},
     { name: 'Address', width: '15%'},
     { name: 'City', width: '10%'},
