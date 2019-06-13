@@ -38,7 +38,10 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ngDialo
           onRegisterApi: function(gridApi) {
             $scope.gridApi = gridApi;
           },
-          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center"><div style="display: inline;line-height: 35px">Beneficial owners</div><button class="btn smallBtn" ng-click="grid.appScope.openAddBeneficialOwnerModal('+data[i].CompanyID+')">Add a beneficial owner</button></div>',
+          headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center">' +
+                            '<div style="line-height: 40px;height:0px">Beneficial owners</div>' +
+                            '<button class="btn smallBtn" ng-click="grid.appScope.openAddBeneficialOwnerModal('+data[i].CompanyID+')">Add a beneficial owner</button>' +
+                          '</div>',
           columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
           data: data[i].BeneficialOwners
         }
