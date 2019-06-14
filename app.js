@@ -1,5 +1,5 @@
 angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.cellNav', 'ui.grid.moveColumns', 'ui.grid.validate', 'ngDialog'])
-.controller('client', function($scope, $http, ngDialog, uiGridValidateService) {
+.controller('client', function($scope, $http, ngDialog, uiGridValidateService, uiGridConstants) {
 
   uiGridValidateService.setValidator('regexValidator',
   function(validator) {
@@ -18,6 +18,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     showExpandAllButton: false, 
     enableSorting: true,
     enableColumnMenus: false,
+    enableRowHashing: false,
     enableCellEditOnFocus: true,
     expandableRowScope: {
       openAddBeneficialOwnersModal: openAddBeneficialOwnersModal
@@ -108,9 +109,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       var data = response.data;
       for (var i = 0; i < data.length; i++) {
         data[i].subGridOptions = {
-          onRegisterApi: function(gridApi) {
-            $scope.gridApi = gridApi;
-          },
           headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center">' +
                             '<div style="line-height: 40px;height:0px">Beneficial owners</div>' +
                             '<button class="btn smallBtn" ng-click="grid.appScope.openAddBeneficialOwnersModal('+data[i].CompanyID+')">Add beneficial owner(s)</button>' +
@@ -120,6 +118,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         }
       }
       $scope.grid.data=response.data;
+      console.log(response.data);
+      $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
     }, function errorCallback(response) {
     });
   })();
@@ -139,7 +139,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
           data: newCompany
         }).then(function successCallback(response) {
           getCompanies();
-          $scope.gridApi.core.refresh();
         }, function errorCallback(response) {
         });
 			},
@@ -186,7 +185,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       data: $scope.beneficialOwners
     }).then(function successCallback(response) {
       getCompanies();
-      $scope.gridApi.core.refresh();
     }, function errorCallback(response) {
     });
     $scope.beneficialOwners =[];
@@ -212,7 +210,6 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       data: updatedCompany
     }).then(function successCallback(response) {
       getCompanies();
-      $scope.gridApi.core.refresh();
     }, function errorCallback(response) {
     });
   }
