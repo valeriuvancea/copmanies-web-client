@@ -1,17 +1,19 @@
 <form name="form" style="text-align:center">
     <h2>Add a beneficial owner</h2>
-    <div class="inputFields">
+    <div class="inputFields" data-ng-repeat="beneficialOwner in beneficialOwners track by $index">
         <h6 style="display:inline">Full name: </h6>
-        <input type="text" placeholder="Full name" name="fullName" ng-model="fullName" class="dialogInput" ng-maxlength="50" required ng-pattern="/^[A-Z\s]*$/i"/>
+        <input type="text" placeholder="Full name" name="fullName{{$index}}" ng-model="beneficialOwner.FullName" class="dialogInput" ng-maxlength="50" required ng-pattern="/^[A-Z\s]*$/i"/>     
+        <button class="btn smallBtn" ng-click="removeBeneficialOwner($index)">Remove</button>
+        <p ng-show="form['fullName{{$index}}'].$dirty && form['fullName{{$index}}'].$error.pattern" class="errorMessage">
+            Full name must contain at least one letter and must be formed only with letters and spaces.
+        </p>
+        <p ng-show="form['fullName{{$index}}'].$error.maxlength" class="errorMessage">
+            Full name must contain maximum 50 characters.
+        </p>
     </div>
-    <p ng-show="form.fullName.$dirty && form.fullName.$error.pattern" class="errorMessage">
-        Full name must contain at least one letter and must be formed only with letters and spaces.
-    </p>
-    <p ng-show="form.fullName.$error.maxlength" class="errorMessage">
-        Full name must contain maximum 50 characters.
-    </p>
+    <button ng-show="beneficialOwners.length<=50" class="btn smallBtn" ng-click="addBeneficialOwner()" style="float:none">Add</button>
     <div class="ngdialog-buttons">
-        <button type="button" ng-disabled="form.fullName.$invalid" class="btn okButton" ng-click="confirm(fullName)">OK</button>
+        <button type="button" ng-disabled="form.$invalid || !beneficialOwners.length" class="btn okButton" ng-click=confirm("OK")>OK</button>
         <button type="button" class="btn cancelBtn" ng-click=closeThisDialog("Cancel")>Cancel</button>
     </div>
 </form>

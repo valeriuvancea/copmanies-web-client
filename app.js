@@ -20,7 +20,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     enableColumnMenus: false,
     enableCellEditOnFocus: true,
     expandableRowScope: {
-      openAddBeneficialOwnerModal: openAddBeneficialOwnerModal
+      openAddBeneficialOwnersModal: openAddBeneficialOwnersModal
     }
   };
 
@@ -113,7 +113,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
           },
           headerTemplate: '<div class="ui-grid-top-panel" style="text-align: center">' +
                             '<div style="line-height: 40px;height:0px">Beneficial owners</div>' +
-                            '<button class="btn smallBtn" ng-click="grid.appScope.openAddBeneficialOwnerModal('+data[i].CompanyID+')">Add a beneficial owner</button>' +
+                            '<button class="btn smallBtn" ng-click="grid.appScope.openAddBeneficialOwnersModal('+data[i].CompanyID+')">Add beneficial owner(s)</button>' +
                           '</div>',
           columnDefs: [{name: 'Beneficial Owners', field: 'FullName', enableColumnMenu: false }],
           data: data[i].BeneficialOwners
@@ -148,35 +148,48 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     );
   };
 
-  function openAddBeneficialOwnerModal(companyID) {
+  function openAddBeneficialOwnersModal(companyID) {
+    $scope.beneficialOwners = 
+    [
+      {
+        "FullName": ""
+      }
+    ];
+    $scope.addBeneficialOwner = function () {
+      var itemToAdd = { "FullName": ""};
+      $scope.beneficialOwners.push(itemToAdd);
+    }
+
+    $scope.removeBeneficialOwner = function (itemIndex) {
+      $scope.beneficialOwners.splice(itemIndex, 1);
+    }
+
     ngDialog.openConfirm({template: 'addBeneficialOwnerDialogTemplate.html',
       className: 'ngdialog-theme-default',
 		  scope: $scope
 		}).then(
-			function(fullName) {
-				addBeneficialOwnerAtCompanyWithIt(fullName, companyID);
+			function(success) {
+				addBeneficialOwnersAtCompanyWithID(companyID);
 			},
 			function(error) {
 			}
 		);
   }
 
-  function addBeneficialOwnerAtCompanyWithIt(fullName, companyID) {
-    var newBeneficialOwner = [{
-      "FullName": fullName
-    }];
+  function addBeneficialOwnersAtCompanyWithID(companyID) {
     $http({
       method: 'POST',
       url: 'https://companies-web-service.herokuapp.com/companies/' + companyID + '/beneficialOwners',
       headers: {
         'Content-Type': 'application/json'
       },
-      data: newBeneficialOwner
+      data: $scope.beneficialOwners
     }).then(function successCallback(response) {
       getCompanies();
       $scope.gridApi.core.refresh();
     }, function errorCallback(response) {
     });
+    $scope.beneficialOwners =[];
   }
 
   function updateCompanyFromRowEntity(rowEntity)
