@@ -75,7 +75,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       width: '15%', 
       validators: 
       { 
-        maxLength: 50,
+        maxLength: 256,//email max length 256 characters http://www.rfc-editor.org/errata_search.php?rfc=3696
         regexValidator: 
         {
           regex: /^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i, 

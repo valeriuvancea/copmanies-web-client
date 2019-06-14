@@ -83,3 +83,9 @@ label
     width: 140px;
     text-align: right;
 }
+
+.errorMessage
+{
+    color:#bc1841;
+    font-size: 12px;
+}

@@ -2,17 +2,47 @@
     <h2>Add a company</h2>
     <div class="inputFields">        
         <label>Name*: </label>
-        <input type="text" placeholder="Name" ng-model="newCompany.Name" class="dialogInput" required/><br/>    
+        <input type="text" placeholder="Name" name="name" ng-model="newCompany.Name" class="dialogInput" required ng-maxlength="30"/><br/>
+        <p ng-show="form.name.$error.maxlength" class="errorMessage">
+            Name must contain maximum 30 characters.
+        </p>    
         <label>Address*: </label>
-        <input type="text" placeholder="Address" ng-model="newCompany.Address" class="dialogInput" required/><br/>    
+        <input type="text" placeholder="Address" name="address" ng-model="newCompany.Address" class="dialogInput" required ng-maxlength="100"/><br/>
+        <p ng-show="form.address.$error.maxlength" class="errorMessage">
+            Address must contain maximum 50 characters.
+        </p>  
         <label>City*: </label>  
-        <input type="text" placeholder="City" ng-model="newCompany.City" class="dialogInput" required ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>  
+        <input type="text" placeholder="City" name="city" ng-model="newCompany.City" class="dialogInput" required ng-maxlength="30" ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>   
+        <p ng-show="form.city.$dirty && form.city.$error.pattern" class="errorMessage">
+            City must contain at least one alpha-numeric character and must be formed only with alpha-numeric and "-()" characters.
+        </p>
+        <p ng-show="form.city.$error.maxlength" class="errorMessage">
+            City must contain maximum 30 characters.
+        </p> 
         <label>Country*: </label>  
-        <input type="text" placeholder="Country" ng-model="newCompany.Country" class="dialogInput" required ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>  
+        <input type="text" placeholder="Country" name="country" ng-model="newCompany.Country" class="dialogInput" required ng-maxlength="30" ng-pattern="/^[A-Z0-9][A-Z0-9.\-()\s]*$/i"/><br/>      
+        <p ng-show="form.country.$dirty && form.country.$error.pattern" class="errorMessage">
+            Country must contain at least one alpha-numeric character and must be formed only with alpha-numeric and "-()" characters.
+        </p>
+        <p ng-show="form.country.$error.maxlength" class="errorMessage">
+            Country must contain maximum 30 characters.
+        </p> 
         <label>Email: </label>
-        <input type="text" placeholder="Email" ng-model="newCompany.EMail" class="dialogInput" ng-pattern="/^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i"/><br/>  
+        <input type="text" placeholder="Email" name="email" ng-model="newCompany.EMail" class="dialogInput" ng-maxlength="256" ng-pattern="/^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i"/><br/>       
+        <p ng-show="form.email.$error.pattern" class="errorMessage">
+            Email is invalid.
+        </p>
+        <p ng-show="form.email.$error.maxlength" class="errorMessage">
+            Email must contain maximum 256 characters.
+        </p>  
         <label>Phone number: </label>
-        <input type="text" placeholder="Phone number" ng-model="newCompany.PhoneNumber" class="dialogInput" ng-pattern="/^\+?[0-9]+$/"/><br/>
+        <input type="text" placeholder="Phone number" name="phoneNumber" ng-model="newCompany.PhoneNumber" class="dialogInput" ng-maxlength="20" ng-pattern="/^\+?[0-9]+$/"/><br/>       
+        <p ng-show="form.phoneNumber.$dirty && form.phoneNumber.$error.pattern" class="errorMessage">
+            Phone number is invalid.
+        </p>
+        <p ng-show="form.phoneNumber.$error.maxlength" class="errorMessage">
+            Phone number must contain maximum 20 characters.
+        </p> 
     </div>
     <div class="ngdialog-buttons">
         <button type="button" ng-disabled="form.$invalid" class="btn okButton" ng-click="confirm(newCompany)">OK</button>
