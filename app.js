@@ -1,13 +1,17 @@
-angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.cellNav', 'ui.grid.moveColumns','ngDialog'])
-.controller('client', function($scope, $http, ngDialog) {
+angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.cellNav', 'ui.grid.moveColumns', 'ui.grid.validate', 'ngDialog'])
+.controller('client', function($scope, $http, ngDialog, uiGridValidateService) {
+
+  uiGridValidateService.setValidator('regexValidator',
+  function(validator) {
+    return function(oldValue, newValue, rowEntity, colDef) {
+      return validator.regex.test(newValue)
+    };
+  },
+  function(validator) {
+    return validator.errorMessage;
+  });
+
   $scope.grid = {
-    onRegisterApi: function(gridApi) {
-      $scope.gridApi = gridApi;
-      gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-        console.log('edited row id:' + rowEntity.CompanyID + ' Column:' + colDef.name + ' newValue:' + newValue + ' oldValue:' + oldValue);
-        $scope.$apply();
-      });
-    },
     appScopeProvider: this,
     enableColumnResizing: true,
     expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
@@ -20,15 +24,79 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     }
   };
 
+  $scope.grid.onRegisterApi = function(gridApi) 
+  {
+    $scope.gridApi = gridApi;
+    gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+      $scope.$apply();
+      if (!gridApi.validate.isInvalid(rowEntity,colDef) && newValue != oldValue)
+      {
+        updateCompanyFromRowEntity(rowEntity);
+      }
+    })
+  }
+
   $scope.grid.columnDefs = 
   [
     { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, type: "number", width: '10%'},
-    { name: 'Name', width: '10%'},
-    { name: 'Address', width: '25%'},
-    { name: 'City', width: '10%'},
-    { name: 'Country', width: '10%'},
-    { name: 'EMail', displayName: 'Email', width: '15%'},
-    { name: 'PhoneNumber', displayName: 'Phone Number', width: '17%'}
+    { name: 'Name', width: '10%', validators: {maxLength: 30, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
+    { name: 'Address', width: '25%', validators: {maxLength: 100, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
+    { 
+      name: 'City', 
+      width: '10%', 
+      validators: 
+      {
+        required: true,
+        maxLength: 30, 
+        regexValidator: 
+        {
+          regex: /^[A-Z0-9][A-Z0-9.\-()\s]*$/i, 
+          errorMessage: 'The field must contain only alpha-numeric and "-()" characters and must start with an alpha-numeric character!'
+        }
+      }, cellTemplate: 'ui-grid/cellTitleValidator'
+    },
+    { 
+      name: 'Country', 
+      width: '10%', 
+      validators: 
+      {
+        required: true,
+        maxLength: 30, 
+        regexValidator: 
+        {
+          regex: /^[A-Z0-9][A-Z0-9.\-()\s]*$/i, 
+          errorMessage: 'The field must contain only alpha-numeric and "-()" characters and must start with an alpha-numeric character!'
+        }
+      }, cellTemplate: 'ui-grid/cellTitleValidator'
+    },
+    { 
+      name: 'EMail', 
+      displayName: "Email",
+      width: '15%', 
+      validators: 
+      { 
+        maxLength: 50,
+        regexValidator: 
+        {
+          regex: /^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i, 
+          errorMessage: 'The field must contain a valid email!'
+        }
+      }, cellTemplate: 'ui-grid/cellTitleValidator'
+    },
+    { 
+      name: 'PhoneNumber', 
+      displayName: "Phone Number",
+      width: '17%', 
+      validators: 
+      { 
+        maxLength: 20,
+        regexValidator: 
+        {
+          regex: /^\+?[0-9]+$/, 
+          errorMessage: 'The field must contain a valid phone number!'
+        }
+      }, cellTemplate: 'ui-grid/cellTitleValidator'
+    },
   ];
 
   var getCompanies;
@@ -104,6 +172,31 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         'Content-Type': 'application/json'
       },
       data: newBeneficialOwner
+    }).then(function successCallback(response) {
+      getCompanies();
+      $scope.gridApi.core.refresh();
+    }, function errorCallback(response) {
+    });
+  }
+
+  function updateCompanyFromRowEntity(rowEntity)
+  {
+    var updatedCompany = 
+    {
+      Address: rowEntity.Address,
+      City: rowEntity.City,
+      Country: rowEntity.Country,
+      EMail: rowEntity.EMail,
+      Name: rowEntity.Name,
+      PhoneNumber: rowEntity.PhoneNumber
+    };
+    $http({
+      method: 'PUT',
+      url: 'https://companies-web-service.herokuapp.com/companies/' + rowEntity.CompanyID, 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: updatedCompany
     }).then(function successCallback(response) {
       getCompanies();
       $scope.gridApi.core.refresh();

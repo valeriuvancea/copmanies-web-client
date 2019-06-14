@@ -72,7 +72,14 @@
     border-color: gray;
 }
 
-input .ng-invalid
+input.ng-invalid
 {
     border: 2px solid #bc1841;
+}
+
+label 
+{
+    display: inline-block;
+    width: 140px;
+    text-align: right;
 }
