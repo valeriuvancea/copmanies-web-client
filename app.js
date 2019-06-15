@@ -11,6 +11,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     return validator.errorMessage;
   });
 
+  $scope.loading = false;
+
   $scope.grid = {
     appScopeProvider: this,
     enableColumnResizing: true,
@@ -102,6 +104,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
 
   var getCompanies;
   (getCompanies = function (){
+    $scope.loading = true;
     $http({
       method: 'GET',
       url: 'https://companies-web-service.herokuapp.com/companies'
@@ -118,9 +121,10 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         }
       }
       $scope.grid.data=response.data;
-      console.log(response.data);
       $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.ALL);
+      $scope.loading = false;
     }, function errorCallback(response) {
+      $scope.loading = false;
     });
   })();
   
@@ -129,7 +133,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       className: 'ngdialog-theme-default',
 		  scope: $scope
 		}).then(
-			function(newCompany) {
+			function(newCompany) {  
+        $scope.loading = true;
 				$http({
           method: 'POST',
           url: 'https://companies-web-service.herokuapp.com/companies',
@@ -139,7 +144,9 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
           data: newCompany
         }).then(function successCallback(response) {
           getCompanies();
+          $scope.loading = false;
         }, function errorCallback(response) {
+          $scope.loading = true;
         });
 			},
 			function(error) {
@@ -176,6 +183,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
   }
 
   function addBeneficialOwnersAtCompanyWithID(companyID) {
+    $scope.loading = true;
     $http({
       method: 'POST',
       url: 'https://companies-web-service.herokuapp.com/companies/' + companyID + '/beneficialOwners',
@@ -185,7 +193,9 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       data: $scope.beneficialOwners
     }).then(function successCallback(response) {
       getCompanies();
+      $scope.loading = false;
     }, function errorCallback(response) {
+      $scope.loading = false;
     });
     $scope.beneficialOwners =[];
   }
@@ -201,6 +211,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       Name: rowEntity.Name,
       PhoneNumber: rowEntity.PhoneNumber
     };
+    $scope.loading = true;
     $http({
       method: 'PUT',
       url: 'https://companies-web-service.herokuapp.com/companies/' + rowEntity.CompanyID, 
@@ -210,7 +221,9 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       data: updatedCompany
     }).then(function successCallback(response) {
       getCompanies();
+      $scope.loading = false;
     }, function errorCallback(response) {
+      $scope.loading = false;
     });
   }
 });
