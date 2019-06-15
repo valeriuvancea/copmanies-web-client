@@ -30,8 +30,8 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
   $scope.grid.columnDefs = 
   [
     { name: 'CompanyID', displayName: 'Company ID', enableCellEdit: false, type: "number", width: '10%'},
-    { name: 'Name', width: '10%', validators: {maxLength: 30, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
-    { name: 'Address', width: '25%', validators: {maxLength: 100, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
+    { name: 'Name', width: '10%', validators: {minLength: 1, maxLength: 30, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
+    { name: 'Address', width: '25%', validators: {minLength: 1, maxLength: 100, required: true}, cellTemplate: 'ui-grid/cellTitleValidator'},
     { 
       name: 'City', 
       width: '10%', 
@@ -41,6 +41,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         maxLength: 30, 
         regexValidator: 
         {
+          optional: false,
           regex: /^[A-Z0-9][A-Z0-9.\-()\s]*$/i, 
           errorMessage: 'The field must contain only alpha-numeric and "-()" characters and must start with an alpha-numeric character!'
         }
@@ -55,6 +56,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         maxLength: 30, 
         regexValidator: 
         {
+          optional: false,
           regex: /^[A-Z0-9][A-Z0-9.\-()\s]*$/i, 
           errorMessage: 'The field must contain only alpha-numeric and "-()" characters and must start with an alpha-numeric character!'
         }
@@ -68,6 +70,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         maxLength: 256,//email max length 256 characters http://www.rfc-editor.org/errata_search.php?rfc=3696
         regexValidator: 
         {
+          optional: true,
           regex: /^[A-Z0-9!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]+$/i, 
           errorMessage: 'The field must contain a valid email!'
         }
@@ -82,6 +85,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         maxLength: 20,
         regexValidator: 
         {
+          optional: true,
           regex: /^\+?[0-9]+$/, 
           errorMessage: 'The field must contain a valid phone number!'
         }
@@ -218,16 +222,23 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     });
   }
 
+  //adding custom validator for ui-grid edit
   uiGridValidateService.setValidator('regexValidator',
   function(validator) {
     return function(oldValue, newValue, rowEntity, colDef) {
+      if (validator.optional && newValue == "")
+      {
+        return true;
+      }
       return validator.regex.test(newValue)
     };
   },
   function(validator) {
     return validator.errorMessage;
   });
-}).directive('autofocus', function () {
+
+
+}).directive('autofocus', function () { //an angular diretive used to focus the first element of a scope
   return {
     restrict: 'A',
     link: function (scope, element) {
