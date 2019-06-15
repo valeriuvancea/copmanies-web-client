@@ -2,7 +2,7 @@
     <h2>Add a beneficial owner</h2>
     <div class="inputFields" data-ng-repeat="beneficialOwner in beneficialOwners track by $index">
         <h6 style="display:inline">Full name: </h6>
-        <input type="text" placeholder="Full name" name="fullName{{$index}}" ng-model="beneficialOwner.FullName" class="dialogInput" ng-maxlength="50" required ng-pattern="/^[A-Z\s]*$/i"/>     
+        <input type="text" autofocus placeholder="Full name" name="fullName{{$index}}" ng-model="beneficialOwner.FullName" class="dialogInput" ng-maxlength="50" required ng-pattern="/^[A-Z\s]*$/i"/>     
         <button class="btn smallBtn" ng-click="removeBeneficialOwner($index)">Remove</button>
         <p ng-show="form['fullName{{$index}}'].$dirty && form['fullName{{$index}}'].$error.pattern" class="errorMessage">
             Full name must contain at least one letter and must be formed only with letters and spaces.

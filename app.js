@@ -228,6 +228,13 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
   function(validator) {
     return validator.errorMessage;
   });
+}).directive('autofocus', function () {
+  return {
+    restrict: 'A',
+    link: function (scope, element) {
+      element[0].focus();
+    }
+  };
 });
 
     
