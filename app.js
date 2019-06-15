@@ -1,16 +1,5 @@
 angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid.resizeColumns', 'ui.grid.cellNav', 'ui.grid.moveColumns', 'ui.grid.validate', 'ngDialog'])
 .controller('client', function($scope, $http, ngDialog, uiGridValidateService, uiGridConstants) {
-
-  uiGridValidateService.setValidator('regexValidator',
-  function(validator) {
-    return function(oldValue, newValue, rowEntity, colDef) {
-      return validator.regex.test(newValue)
-    };
-  },
-  function(validator) {
-    return validator.errorMessage;
-  });
-
   $scope.loading = false;
 
   $scope.grid = {
@@ -124,6 +113,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       $scope.loading = false;
     }, function errorCallback(response) {
       $scope.loading = false;
+      alert(response.data);
     });
   })();
   
@@ -146,9 +136,10 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
           $scope.loading = false;
         }, function errorCallback(response) {
           $scope.loading = true;
+          alert(response.data);
         });
 			},
-			function(error) {
+			function(cancel) {
 			}
     );
   };
@@ -176,7 +167,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
 			function(success) {
 				addBeneficialOwnersAtCompanyWithID(companyID);
 			},
-			function(error) {
+			function(cancel) {
 			}
 		);
   }
@@ -195,6 +186,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       $scope.loading = false;
     }, function errorCallback(response) {
       $scope.loading = false;
+      alert(response.data)
     });
     $scope.beneficialOwners =[];
   }
@@ -223,8 +215,19 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       $scope.loading = false;
     }, function errorCallback(response) {
       $scope.loading = false;
+      alert(response.data);
     });
   }
+
+  uiGridValidateService.setValidator('regexValidator',
+  function(validator) {
+    return function(oldValue, newValue, rowEntity, colDef) {
+      return validator.regex.test(newValue)
+    };
+  },
+  function(validator) {
+    return validator.errorMessage;
+  });
 });
 
     
