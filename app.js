@@ -86,7 +86,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
         regexValidator: 
         {
           optional: true,
-          regex: /^\+?[0-9]+$/, 
+          regex: /^\+?[0-9][0-9\s\.]*$/, 
           errorMessage: 'The field must contain a valid phone number!'
         }
       }, cellTemplate: 'ui-grid/cellTitleValidator'

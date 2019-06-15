@@ -36,7 +36,7 @@
             Email must contain maximum 256 characters.
         </p>  
         <label>Phone number: </label>
-        <input type="text" placeholder="Phone number" name="phoneNumber" ng-model="newCompany.PhoneNumber" class="dialogInput" ng-maxlength="20" ng-pattern="/^\+?[0-9]+$/"/><br/>       
+        <input type="text" placeholder="Phone number" name="phoneNumber" ng-model="newCompany.PhoneNumber" class="dialogInput" ng-maxlength="20" ng-pattern="/^+?[0-9][0-9\s\.]*$/"/><br/>       
         <p ng-show="form.phoneNumber.$dirty && form.phoneNumber.$error.pattern" class="errorMessage">
             Phone number is invalid.
         </p>
