@@ -16,8 +16,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
   $scope.grid = {
     appScopeProvider: this,
     enableColumnResizing: true,
-    expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>',
-    showExpandAllButton: false, 
+    expandableRowTemplate: '<div ui-grid="row.entity.subGridOptions" style="height:150px;"></div>', 
     enableSorting: true,
     enableColumnMenus: false,
     enableRowHashing: false,
@@ -89,7 +88,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
     { 
       name: 'PhoneNumber', 
       displayName: "Phone Number",
-      width: '17%', 
+      width: '15%', 
       validators: 
       { 
         maxLength: 20,
