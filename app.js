@@ -61,8 +61,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       }, cellTemplate: 'ui-grid/cellTitleValidator'
     },
     { 
-      name: 'EMail', 
-      displayName: "Email",
+      name: 'Email',
       width: '15%', 
       validators: 
       { 
@@ -198,7 +197,7 @@ angular.module('app', ['ui.grid', 'ui.grid.expandable', 'ui.grid.edit', 'ui.grid
       Address: rowEntity.Address,
       City: rowEntity.City,
       Country: rowEntity.Country,
-      EMail: rowEntity.EMail,
+      Email: rowEntity.Email,
       Name: rowEntity.Name,
       PhoneNumber: rowEntity.PhoneNumber
     };
